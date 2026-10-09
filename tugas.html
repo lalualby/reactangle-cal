@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalkulator Persegi Panjang - Old Money Heritage</title>
+    <!-- Google Fonts: Cormorant Garamond, Cinzel, & Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600;1,700&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-paper: #f4efe6;
+            --card-ivory: #fcfbf7;
+            --racing-green: #14281d;
+            --racing-green-hover: #1b3527;
+            --brass-gold: #b38f53;
+            --brass-light: #d8c29d;
+            --brass-faint: rgba(179, 143, 83, 0.12);
+            --ink-black: #1f1d1a;
+            --ink-muted: #6b645b;
+            --ink-faint: #9c9387;
+            --border-antique: #dfd5c4;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--bg-paper);
+            background-image: 
+                radial-gradient(ellipse at 50% 0%, #ffffff 0%, rgba(244, 239, 230, 0) 70%),
+                radial-gradient(rgba(179, 143, 83, 0.08) 1px, transparent 1px);
+            background-size: 100% 100%, 24px 24px;
+            padding: 40px 20px;
+            color: var(--ink-black);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        /* Card: Double Hairline Border dengan bayangan yang sangat lembut */
+        .heritage-card {
+            width: 100%;
+            max-width: 480px;
+            background: var(--card-ivory);
+            border: 1px solid var(--brass-gold);
+            border-radius: 20px;
+            padding: 40px 34px;
+            position: relative;
+            box-shadow: 
+                0 10px 25px -8px rgba(45, 38, 28, 0.06),
+                0 0 0 6px var(--card-ivory),
+                0 0 0 7px rgba(179, 143, 83, 0.35);
+        }
+
+        /* Vintage Monogram / Crest Header */
+        .crest-header {
+            text-align: center;
+            margin-bottom: 26px;
+        }
+
+        .crest-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            border: 1px solid var(--brass-gold);
+            background: var(--brass-faint);
+            margin-bottom: 12px;
+            box-shadow: none;
+        }
+
+        .crest-icon svg {
+            width: 24px;
+            height: 24px;
+            fill: var(--brass-gold);
+        }
+
+        .heritage-label {
+            font-family: 'Cinzel', serif;
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            color: var(--brass-gold);
+            margin-bottom: 6px;
+            display: block;
+        }
+
+        .crest-header h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.1rem;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+            color: var(--racing-green);
+            line-height: 1.15;
+            margin-bottom: 6px;
+        }
+
+        .crest-header p {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.05rem;
+            font-style: italic;
+            color: var(--ink-muted);
+        }
+
+        /* Divider */
+        .vintage-divider {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin: 18px 0 24px;
+        }
+
+        .vintage-divider .line {
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--border-antique), transparent);
+        }
+
+        .vintage-divider .diamond {
+            width: 5px;
+            height: 5px;
+            background: var(--brass-gold);
+            transform: rotate(45deg);
+        }
+
+        /* Interactive Blueprint / Atelier Geometry */
+        .blueprint-container {
+            background: #f7f3ea;
+            border: 1px solid var(--border-antique);
+            border-radius: 14px;
+            padding: 16px;
+            margin-bottom: 22px;
+            position: relative;
+        }
+
+        .blueprint-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: 'Cinzel', serif;
+            font-size: 0.68rem;
+            letter-spacing: 1.5px;
+            color: var(--ink-muted);
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+
+        .blueprint-viewport {
+            height: 105px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .blueprint-box {
+            position: relative;
+            background: rgba(20, 40, 29, 0.05);
+            border: 1.5px solid var(--racing-green);
+            border-radius: 4px;
+            transition: width 0.3s ease, height 0.3s ease;
+            min-width: 45px;
+            min-height: 35px;
+            box-shadow: none;
+        }
+
+        .blueprint-tag {
+            position: absolute;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 0.85rem;
+            font-weight: 600;
+            font-style: italic;
+            background: var(--card-ivory);
+            color: var(--racing-green);
+            padding: 1px 8px;
+            border: 1px solid var(--brass-gold);
+            border-radius: 4px;
+            white-space: nowrap;
+        }
+
+        .blueprint-tag.top {
+            top: -14px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .blueprint-tag.side {
+            right: -16px;
+            top: 50%;
+            transform: translateY(-50%) rotate(90deg);
+        }
+
+        /* Presets: Quiet Luxury Chips */
+        .preset-row {
+            display: flex;
+            gap: 7px;
+            margin-bottom: 22px;
+            overflow-x: auto;
+            padding-bottom: 4px;
+        }
+
+        .preset-chip {
+            background: var(--card-ivory);
+            border: 1px solid var(--border-antique);
+            border-radius: 8px;
+            padding: 5px 12px;
+            font-family: 'Cinzel', serif;
+            font-size: 0.68rem;
+            letter-spacing: 0.5px;
+            color: var(--ink-muted);
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.2s ease;
+        }
+
+        .preset-chip:hover {
+            border-color: var(--brass-gold);
+            color: var(--racing-green);
+            background: var(--brass-faint);
+        }
+
+        /* Inputs Grid */
+        .input-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+            margin-bottom: 20px;
+        }
+
+        .field-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            font-family: 'Cinzel', serif;
+            font-size: 0.72rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            color: var(--ink-muted);
+            text-transform: uppercase;
+            margin-bottom: 7px;
+        }
+
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 11px 36px 11px 14px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--ink-black);
+            background: #ffffff;
+            border: 1px solid var(--border-antique);
+            border-radius: 10px;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+
+        input[type="number"]:focus {
+            border-color: var(--brass-gold);
+            box-shadow: 0 0 0 2px rgba(179, 143, 83, 0.18);
+        }
+
+        input[type="number"]::-webkit-outer-spin-button,
+        input[type="number"]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        input[type="number"] {
+            -moz-appearance: textfield;
+        }
+
+        .unit-label {
+            position: absolute;
+            right: 13px;
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+            font-weight: 600;
+            color: var(--ink-faint);
+            font-size: 0.95rem;
+            pointer-events: none;
+        }
+
+        /* British Racing Green Button - Shadow Halus & Minimal */
+        .btn-heritage {
+            width: 100%;
+            padding: 14px;
+            background: var(--racing-green);
+            color: #f6efe2;
+            border: 1px solid var(--brass-gold);
+            border-radius: 12px;
+            font-family: 'Cinzel', serif;
+            font-size: 0.82rem;
+            font-weight: 600;
+            letter-spacing: 2.2px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            box-shadow: 0 2px 6px rgba(20, 40, 29, 0.08);
+            margin-bottom: 24px;
+        }
+
+        .btn-heritage:hover {
+            background: var(--racing-green-hover);
+            border-color: #dfc499;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 10px rgba(20, 40, 29, 0.12);
+        }
+
+        .btn-heritage:active {
+            transform: translateY(0);
+            box-shadow: none;
+        }
+
+        /* Results Plaques - Bersih tanpa shadow berlebihan */
+        .results-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+
+        .plaque-card {
+            background: #ffffff;
+            border: 1px solid var(--border-antique);
+            border-radius: 12px;
+            padding: 18px 14px;
+            text-align: center;
+            position: relative;
+            transition: all 0.2s ease;
+            box-shadow: none;
+        }
+
+        .plaque-card:hover {
+            border-color: var(--brass-gold);
+            box-shadow: 0 2px 8px rgba(179, 143, 83, 0.08);
+        }
+
+        .plaque-title {
+            font-family: 'Cinzel', serif;
+            font-size: 0.68rem;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--ink-muted);
+            margin-bottom: 6px;
+        }
+
+        .plaque-value-row {
+            display: flex;
+            align-items: baseline;
+            justify-content: center;
+            gap: 3px;
+            margin-bottom: 5px;
+        }
+
+        .plaque-number {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--racing-green);
+            line-height: 1;
+        }
+
+        .plaque-unit {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1rem;
+            font-style: italic;
+            color: var(--ink-muted);
+        }
+
+        .formula-seal {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 0.85rem;
+            font-style: italic;
+            color: var(--brass-gold);
+            font-weight: 600;
+        }
+
+        .footer-tag {
+            text-align: center;
+            margin-top: 24px;
+            font-family: 'Cinzel', serif;
+            font-size: 0.65rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--ink-faint);
+        }
+
+        @media (max-width: 480px) {
+            .heritage-card {
+                padding: 30px 20px;
+            }
+            .input-grid {
+                grid-template-columns: 1fr;
+            }
+            .crest-header h1 {
+                font-size: 1.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main class="heritage-card">
+        <!-- Vintage Crest & Monogram Header -->
+        <header class="crest-header">
+            <div class="crest-icon">
+                <!-- Architectural Roman Geometry Emblem -->
+                <svg viewBox="0 0 24 24">
+                    <path d="M12 2L2 22h20L12 2zm0 3.8L18.5 19H5.5L12 5.8z"/>
+                    <path d="M10 13h4v2h-4z"/>
+                </svg>
+            </div>
+            <span class="heritage-label">Académie de Géométrie • Tugas 1</span>
+            <h1>Kalkulator Persegi Panjang</h1>
+            <p>Perhitungan Presisi Luas & Keliling</p>
+        </header>
+
+        <!-- Divider with Gold Diamond -->
+        <div class="vintage-divider">
+            <div class="line"></div>
+            <div class="diamond"></div>
+            <div class="line"></div>
+        </div>
+
+        <!-- Atelier Geometric Blueprint -->
+        <div class="blueprint-container">
+            <div class="blueprint-top">
+                <span>Sketsa Proporsi</span>
+                <span id="previewRatio">Rasio 0 : 0</span>
+            </div>
+            <div class="blueprint-viewport">
+                <div class="blueprint-box" id="previewBox" style="width: 40px; height: 40px;">
+                    <span class="blueprint-tag top" id="tagPanjang">p: 0 m</span>
+                    <span class="blueprint-tag side" id="tagLebar">l: 0 m</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Preset Chips -->
+        <div class="preset-row">
+            <button type="button" class="preset-chip" onclick="applyPreset(10, 5)">Salon 10 × 5</button>
+            <button type="button" class="preset-chip" onclick="applyPreset(12, 12)">Carré 12 × 12</button>
+            <button type="button" class="preset-chip" onclick="applyPreset(24, 12)">Galerie 24 × 12</button>
+            <button type="button" class="preset-chip" onclick="applyPreset(50, 20)">Domaine 50 × 20</button>
+        </div>
+
+        <!-- Input Grid -->
+        <div class="input-grid">
+            <div class="field-group">
+                <label for="panjang">Panjang (p)</label>
+                <div class="input-wrapper">
+                    <input type="number" id="panjang" placeholder="0" value="0" min="0" step="any">
+                    <span class="unit-label">m</span>
+                </div>
+            </div>
+
+            <div class="field-group">
+                <label for="lebar">Lebar (l)</label>
+                <div class="input-wrapper">
+                    <input type="number" id="lebar" placeholder="0" value="0" min="0" step="any">
+                    <span class="unit-label">m</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Classic Heritage Button -->
+        <button id="btnHitung" class="btn-heritage" onclick="hitungPersegiPanjang()">
+            Hitung Hasil
+        </button>
+
+        <!-- Result Plaques -->
+        <div class="results-grid">
+            <!-- Luas Plaque -->
+            <div class="plaque-card">
+                <div class="plaque-title">Luas Area</div>
+                <div class="plaque-value-row">
+                    <span id="luas" class="plaque-number">0</span>
+                    <span class="plaque-unit">m<sup>2</sup></span>
+                </div>
+                <div class="formula-seal">p × l</div>
+            </div>
+
+            <!-- Keliling Plaque -->
+            <div class="plaque-card">
+                <div class="plaque-title">Keliling</div>
+                <div class="plaque-value-row">
+                    <span id="keliling" class="plaque-number">0</span>
+                    <span class="plaque-unit">m</span>
+                </div>
+                <div class="formula-seal">2 × (p + l)</div>
+            </div>
+        </div>
+
+        <div class="footer-tag">
+            Heritage Mathematics • JavaScript Native
+        </div>
+    </main>
+
+    <script>
+        /**
+         * Fungsi Menghitung Luas & Keliling Persegi Panjang
+         */
+        function hitungPersegiPanjang() {
+            /*
+                == Task 1 ==
+                Mengambil nilai input panjang dan lebar dengan tipe data number
+            */
+            let length = parseFloat(document.getElementById("panjang").value);
+            let width = parseFloat(document.getElementById("lebar").value);
+
+            let tagPanjang = document.getElementById("tagPanjang");
+            let tagLebar = document.getElementById("tagLebar");
+            let previewRatio = document.getElementById("previewRatio");
+
+            // Validasi jika input tidak valid
+            if (isNaN(length) || isNaN(width) || length < 0 || width < 0) {
+                document.getElementById("luas").innerText = "-";
+                document.getElementById("keliling").innerText = "-";
+                tagPanjang.innerText = "p: -";
+                tagLebar.innerText = "l: -";
+                previewRatio.innerText = "Dimensi Tidak Valid";
+                return;
+            }
+
+            /*
+                == Task 2 ==
+                Variabel luas berisi hasil perkalian panjang dan lebar (p * l)
+            */
+            let luas = length * width;
+
+            /*
+                == Task 3 ==
+                Variabel keliling berisi hasil 2 * (panjang + lebar)
+            */
+            let keliling = 2 * (length + width);
+
+            /*
+                Menampilkan hasil ke elemen HTML
+            */
+            document.getElementById("luas").innerText = formatNumber(luas);
+            document.getElementById("keliling").innerText = formatNumber(keliling);
+
+            tagPanjang.innerText = `p: ${length} m`;
+            tagLebar.innerText = `l: ${width} m`;
+
+            updateBlueprintPreview(length, width);
+        }
+
+        /**
+         * Update proporsi visual persegi panjang
+         */
+        function updateBlueprintPreview(p, l) {
+            let box = document.getElementById("previewBox");
+            let ratioText = document.getElementById("previewRatio");
+
+            if (p <= 0 || l <= 0) {
+                box.style.width = "40px";
+                box.style.height = "40px";
+                ratioText.innerText = "0 × 0";
+                return;
+            }
+
+            const maxW = 200;
+            const maxH = 90;
+            const minSize = 40;
+
+            let wPx, hPx;
+
+            if (p >= l) {
+                wPx = maxW;
+                hPx = Math.max(minSize, Math.round((l / p) * maxW));
+                if (hPx > maxH) {
+                    hPx = maxH;
+                    wPx = Math.max(minSize, Math.round((p / l) * maxH));
+                }
+            } else {
+                hPx = maxH;
+                wPx = Math.max(minSize, Math.round((p / l) * maxH));
+                if (wPx > maxW) {
+                    wPx = maxW;
+                    hPx = Math.max(minSize, Math.round((l / p) * maxW));
+                }
+            }
+
+            box.style.width = `${wPx}px`;
+            box.style.height = `${hPx}px`;
+
+            let ratio = (p / l).toFixed(2);
+            ratioText.innerText = `Rasio: ${p} : ${l} (${ratio} : 1)`;
+        }
+
+        /**
+         * Format angka desimal rapi
+         */
+        function formatNumber(num) {
+            return Number.isInteger(num) ? num : parseFloat(num.toFixed(2));
+        }
+
+        /**
+         * Preset instan
+         */
+        function applyPreset(p, l) {
+            document.getElementById("panjang").value = p;
+            document.getElementById("lebar").value = l;
+            hitungPersegiPanjang();
+        }
+
+        // Event listener saat input diketik langsung (real-time)
+        document.getElementById("panjang").addEventListener("input", hitungPersegiPanjang);
+        document.getElementById("lebar").addEventListener("input", hitungPersegiPanjang);
+
+        // Inisialisasi perhitungan awal
+        hitungPersegiPanjang();
+    </script>
+</body>
+</html>
